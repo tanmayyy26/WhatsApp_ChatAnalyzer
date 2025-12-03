@@ -28,7 +28,12 @@ st.set_page_config(
     page_title="WhatsApp Analyzer",
     page_icon="💬",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer',
+        'Report a bug': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer/issues',
+        'About': 'WhatsApp Chat Analyzer v2.0 - Made with Streamlit'
+    }
 )
 
 # Custom CSS for better styling
@@ -61,6 +66,35 @@ uploaded_file = st.sidebar.file_uploader(
     type=['txt'],
     help="Export your WhatsApp chat without media"
 )
+
+# Theme settings
+st.sidebar.markdown("---")
+st.sidebar.subheader("🎨 Theme Settings")
+theme_option = st.sidebar.radio(
+    "Choose theme:",
+    ["Light", "Dark", "Auto"],
+    help="Light: Bright colors | Dark: Dark colors | Auto: Follow system preference"
+)
+
+# Store theme preference
+if 'theme_preference' not in st.session_state:
+    st.session_state.theme_preference = "Light"
+
+st.session_state.theme_preference = theme_option
+
+# Theme instructions
+st.sidebar.markdown("""
+### 🎨 How to Change Theme
+
+**In Streamlit Cloud:**
+1. Click the **⚙️ Settings** icon (top right)
+2. Go to **Settings**
+3. Select **Theme** (Light/Dark)
+
+**Locally:**
+- Use the radio button above ⬆️
+- Or set in `.streamlit/config.toml`
+""")
 
 # Initialize date filter in session state
 if 'date_filter_enabled' not in st.session_state:
