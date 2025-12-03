@@ -1,0 +1,324 @@
+{
+  "overview": {
+    "total_chats": 152,
+    "total_events": 4,
+    "total_attachments": 5,
+    "deleted_messages": 1,
+    "unique_senders": 11,
+    "unique_words": 602,
+    "unique_emojis": 7,
+    "unique_domains": 9,
+    "date_range": null,
+    "most_active_day": [
+      "2019-07-15",
+      64
+    ],
+    "most_active_hour": [
+      11,
+      42
+    ]
+  },
+  "senders": [
+    [
+      "+62 8xx-xxxx-xx67",
+      46
+    ],
+    [
+      "+62 8xx-xxx-x09",
+      41
+    ],
+    [
+      "+62 8xx-xxxx-xx83",
+      39
+    ],
+    [
+      "+62 8xx-xxxx-xx5",
+      9
+    ],
+    [
+      "+62 8xx-xxxx-xx26",
+      6
+    ],
+    [
+      "+62 8xx-xxxx-xx96",
+      4
+    ],
+    [
+      "+62 8xx-xxxx-xx57",
+      4
+    ],
+    [
+      "+62 8xx-xxxx-xx24",
+      3
+    ],
+    [
+      "+62 8xx-xxxx-xx31",
+      3
+    ],
+    [
+      "+62 8xx-xxxx-xx06",
+      1
+    ],
+    [
+      "+62 8xx-xxxx-xx73",
+      1
+    ]
+  ],
+  "words": [
+    [
+      "ada",
+      13
+    ],
+    [
+      "budi",
+      12
+    ],
+    [
+      "yang",
+      11
+    ],
+    [
+      "driver",
+      10
+    ],
+    [
+      "bisa",
+      9
+    ],
+    [
+      "tapi",
+      9
+    ],
+    [
+      "delivery",
+      9
+    ],
+    [
+      "ini",
+      8
+    ],
+    [
+      "nya",
+      8
+    ],
+    [
+      "gak",
+      8
+    ],
+    [
+      "dari",
+      8
+    ],
+    [
+      "lebih",
+      7
+    ],
+    [
+      "harga",
+      7
+    ],
+    [
+      "dapat",
+      6
+    ],
+    [
+      "aja",
+      6
+    ],
+    [
+      "bukan",
+      6
+    ],
+    [
+      "apa",
+      6
+    ],
+    [
+      "gitu",
+      6
+    ],
+    [
+      "bikin",
+      5
+    ],
+    [
+      "mau",
+      5
+    ]
+  ],
+  "emojis": [
+    [
+      "🤣",
+      12
+    ],
+    [
+      "👍",
+      4
+    ],
+    [
+      "👏",
+      3
+    ],
+    [
+      "😁",
+      3
+    ],
+    [
+      "🤭",
+      3
+    ],
+    [
+      "😂",
+      1
+    ],
+    [
+      "☝",
+      1
+    ]
+  ],
+  "domains": [
+    [
+      "medium.com",
+      2
+    ],
+    [
+      "cantunsee.space",
+      1
+    ],
+    [
+      "webauthn.guide",
+      1
+    ],
+    [
+      "github.com",
+      1
+    ],
+    [
+      "css-tricks.com",
+      1
+    ],
+    [
+      "www.reddit.com",
+      1
+    ],
+    [
+      "techcrunch.com",
+      1
+    ],
+    [
+      "www.meetup.com",
+      1
+    ],
+    [
+      "finance.detik.com",
+      1
+    ]
+  ],
+  "response_times": [
+    [
+      "+62 8xx-xxxx-xx24",
+      180.0
+    ],
+    [
+      "+62 8xx-xxx-x09",
+      207.27272727272728
+    ],
+    [
+      "+62 8xx-xxxx-xx83",
+      246.66666666666666
+    ],
+    [
+      "+62 8xx-xxxx-xx31",
+      300.0
+    ],
+    [
+      "+62 8xx-xxxx-xx96",
+      360.0
+    ],
+    [
+      "+62 8xx-xxxx-xx06",
+      420.0
+    ],
+    [
+      "+62 8xx-xxxx-xx67",
+      510.0
+    ],
+    [
+      "+62 8xx-xxxx-xx57",
+      720.0
+    ]
+  ],
+  "conversations": 54,
+  "peak_hours": [
+    [
+      11,
+      42
+    ],
+    [
+      10,
+      32
+    ],
+    [
+      20,
+      30
+    ],
+    [
+      9,
+      15
+    ],
+    [
+      15,
+      14
+    ]
+  ],
+  "sender_interactions": {
+    "+62 8xx-xxx-x09": {
+      "+62 8xx-xxxx-xx24": 3,
+      "+62 8xx-xxxx-xx67": 7,
+      "+62 8xx-xxxx-xx06": 1,
+      "+62 8xx-xxxx-xx83": 6,
+      "+62 8xx-xxxx-xx31": 2,
+      "+62 8xx-xxxx-xx73": 1,
+      "+62 8xx-xxxx-xx57": 1
+    },
+    "+62 8xx-xxxx-xx24": {
+      "+62 8xx-xxx-x09": 2
+    },
+    "+62 8xx-xxxx-xx83": {
+      "+62 8xx-xxx-x09": 9,
+      "+62 8xx-xxxx-xx67": 11,
+      "+62 8xx-xxxx-xx26": 2,
+      "+62 8xx-xxxx-xx57": 1
+    },
+    "+62 8xx-xxxx-xx67": {
+      "+62 8xx-xxxx-xx96": 1,
+      "+62 8xx-xxx-x09": 4,
+      "+62 8xx-xxxx-xx5": 1,
+      "+62 8xx-xxxx-xx57": 1,
+      "+62 8xx-xxxx-xx83": 10
+    },
+    "+62 8xx-xxxx-xx96": {
+      "+62 8xx-xxx-x09": 1
+    },
+    "+62 8xx-xxxx-xx06": {
+      "+62 8xx-xxxx-xx83": 1
+    },
+    "+62 8xx-xxxx-xx31": {
+      "+62 8xx-xxx-x09": 2
+    },
+    "+62 8xx-xxxx-xx5": {
+      "+62 8xx-xxx-x09": 1
+    },
+    "+62 8xx-xxxx-xx73": {
+      "+62 8xx-xxxx-xx83": 1
+    },
+    "+62 8xx-xxxx-xx26": {
+      "+62 8xx-xxxx-xx83": 3
+    },
+    "+62 8xx-xxxx-xx57": {
+      "+62 8xx-xxxx-xx83": 1,
+      "+62 8xx-xxxx-xx67": 1,
+      "+62 8xx-xxxx-xx26": 1
+    }
+  }
+}

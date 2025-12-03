@@ -1,0 +1,169 @@
+{
+  "overview": {
+    "total_chats": 34,
+    "total_events": 0,
+    "total_attachments": 3,
+    "deleted_messages": 0,
+    "unique_senders": 2,
+    "unique_words": 73,
+    "unique_emojis": 3,
+    "unique_domains": 0,
+    "date_range": null,
+    "most_active_day": [
+      "2025-09-22",
+      11
+    ],
+    "most_active_hour": [
+      21,
+      13
+    ]
+  },
+  "senders": [
+    [
+      "Tanmay Wagh",
+      21
+    ],
+    [
+      "Tanishka Gaurkar",
+      16
+    ]
+  ],
+  "words": [
+    [
+      "ahe",
+      7
+    ],
+    [
+      "tula",
+      5
+    ],
+    [
+      "aahe",
+      4
+    ],
+    [
+      "madhe",
+      3
+    ],
+    [
+      "acha",
+      3
+    ],
+    [
+      "raisoni",
+      2
+    ],
+    [
+      "kahi",
+      2
+    ],
+    [
+      "competition",
+      2
+    ],
+    [
+      "mahit",
+      2
+    ],
+    [
+      "nahi",
+      2
+    ],
+    [
+      "aata",
+      2
+    ],
+    [
+      "vicharun",
+      2
+    ],
+    [
+      "sangte",
+      2
+    ],
+    [
+      "mnte",
+      2
+    ],
+    [
+      "kay",
+      2
+    ],
+    [
+      "jhulelal",
+      2
+    ],
+    [
+      "konti",
+      1
+    ],
+    [
+      "vagere",
+      1
+    ],
+    [
+      "technical",
+      1
+    ],
+    [
+      "type",
+      1
+    ]
+  ],
+  "emojis": [
+    [
+      "🙂",
+      2
+    ],
+    [
+      "😂",
+      2
+    ],
+    [
+      "🤦",
+      1
+    ]
+  ],
+  "domains": [],
+  "response_times": [
+    [
+      "Tanishka Gaurkar",
+      497.14285714285717
+    ],
+    [
+      "Tanmay Wagh",
+      540.0
+    ]
+  ],
+  "conversations": 10,
+  "peak_hours": [
+    [
+      21,
+      13
+    ],
+    [
+      11,
+      9
+    ],
+    [
+      18,
+      7
+    ],
+    [
+      20,
+      6
+    ],
+    [
+      8,
+      2
+    ]
+  ],
+  "sender_interactions": {
+    "Tanmay Wagh": {
+      "Tanishka Gaurkar": 10
+    },
+    "Tanishka Gaurkar": {
+      "Tanmay Wagh": 10
+    }
+  }
+}
