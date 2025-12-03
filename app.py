@@ -67,36 +67,6 @@ uploaded_file = st.sidebar.file_uploader(
     help="Export your WhatsApp chat without media"
 )
 
-# Theme settings
-st.sidebar.markdown("---")
-st.sidebar.subheader("🎨 Theme Control")
-st.sidebar.markdown("""
-### How to Change Theme
-
-**🌐 Streamlit Cloud:**
-1. Click **⚙️** (Settings icon - top right)
-2. Select **Settings**
-3. Choose **Light/Dark** theme
-
-**💻 Local Machine:**
-The app uses the theme from `.streamlit/config.toml`:
-
-```toml
-[theme]
-base = "light"  # Change to "dark"
-```
-
-Then restart the app:
-```bash
-streamlit run app.py
-```
-
-**⌨️ Command Line:**
-```bash
-streamlit run app.py --theme dark
-```
-""")
-
 # Initialize date filter in session state
 if 'date_filter_enabled' not in st.session_state:
     st.session_state.date_filter_enabled = False
@@ -118,7 +88,7 @@ st.sidebar.markdown("""
 
 # Main application logic
 if uploaded_file:
-    # Auto-save to Supabase (silently)
+    # Auto-save to Supabase (silently in background)
     if supabase_manager.is_connected():
         file_bytes = uploaded_file.getvalue()
         supabase_manager.save_file(uploaded_file.name, file_bytes)

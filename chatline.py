@@ -4,8 +4,6 @@ from dateutil import parser
 import emoji
 import patterns
 
-# TODO: Classify attachment
-
 class Chatline:
 
     def __init__(self, line="", previous_line=None, debug=False):
