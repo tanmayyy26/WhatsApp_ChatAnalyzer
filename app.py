@@ -69,31 +69,32 @@ uploaded_file = st.sidebar.file_uploader(
 
 # Theme settings
 st.sidebar.markdown("---")
-st.sidebar.subheader("🎨 Theme Settings")
-theme_option = st.sidebar.radio(
-    "Choose theme:",
-    ["Light", "Dark", "Auto"],
-    help="Light: Bright colors | Dark: Dark colors | Auto: Follow system preference"
-)
-
-# Store theme preference
-if 'theme_preference' not in st.session_state:
-    st.session_state.theme_preference = "Light"
-
-st.session_state.theme_preference = theme_option
-
-# Theme instructions
+st.sidebar.subheader("🎨 Theme Control")
 st.sidebar.markdown("""
-### 🎨 How to Change Theme
+### How to Change Theme
 
-**In Streamlit Cloud:**
-1. Click the **⚙️ Settings** icon (top right)
-2. Go to **Settings**
-3. Select **Theme** (Light/Dark)
+**🌐 Streamlit Cloud:**
+1. Click **⚙️** (Settings icon - top right)
+2. Select **Settings**
+3. Choose **Light/Dark** theme
 
-**Locally:**
-- Use the radio button above ⬆️
-- Or set in `.streamlit/config.toml`
+**💻 Local Machine:**
+The app uses the theme from `.streamlit/config.toml`:
+
+```toml
+[theme]
+base = "light"  # Change to "dark"
+```
+
+Then restart the app:
+```bash
+streamlit run app.py
+```
+
+**⌨️ Command Line:**
+```bash
+streamlit run app.py --theme dark
+```
 """)
 
 # Initialize date filter in session state

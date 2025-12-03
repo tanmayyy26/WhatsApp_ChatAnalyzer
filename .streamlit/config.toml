@@ -11,7 +11,7 @@ showErrorDetails = false
 toolbarMode = "viewer"
 
 [logger]
-level = "info"
+level = "warning"
 
 [server]
 headless = true
@@ -19,3 +19,8 @@ port = 8504
 maxUploadSize = 200
 enableCORS = true
 enableXsrfProtection = true
+
+# Browser cache settings
+[browser]
+gatherUsageStats = false
+
