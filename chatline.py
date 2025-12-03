@@ -15,6 +15,7 @@ class Chatline:
         self.timestamp = None
         self.sender = None
         self.body = ""
+        self.message = ""
         self.is_startingline = False
         self.is_followingline = False
         self.is_deleted_chat = False
@@ -193,6 +194,8 @@ class Chatline:
                 message_body = chat.group(3)
 
             self.body = message_body
+            # legacy/alternate attribute name used across tests/scripts
+            self.message = message_body
 
             has_attachment = self.contains_attachment(message_body)
             if has_attachment:
@@ -226,3 +229,4 @@ class Chatline:
         elif self.is_event(body):
             # Set line_type
             self.line_type = "Event"
+
