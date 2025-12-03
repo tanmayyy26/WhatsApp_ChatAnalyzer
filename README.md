@@ -4,11 +4,13 @@ A powerful web application to analyze your WhatsApp chat exports with beautiful 
 
 ## 🚀 Quick Start
 
-### Step 1: Install Python
+### Local Development
+
+#### Step 1: Install Python
 Make sure you have Python 3.8 or higher installed on your computer.
 - Download from: https://www.python.org/downloads/
 
-### Step 2: Setup Project
+#### Step 2: Setup Project
 
 1. **Open the project folder** in your terminal/command prompt:
    ```bash
@@ -36,6 +38,26 @@ Make sure you have Python 3.8 or higher installed on your computer.
    ```
 
 6. **Open your browser** at: `http://localhost:8504`
+
+### ☁️ Cloud Deployment (Free!)
+
+Want to share your analyzer with friends? Deploy to **Streamlit Cloud** for **free**!
+
+#### Quick Deploy Steps:
+
+1. **Go to Streamlit Cloud**: https://share.streamlit.io
+2. **Sign in with GitHub** (or create account)
+3. **Click "New app"**
+4. **Select your repository**: `tanmayyy26/WhatsApp_ChatAnalyzer`
+5. **Select branch**: `main`
+6. **Select main file**: `app.py`
+7. **Click "Deploy"** → Your app will be live in 2-3 minutes!
+
+**Your app URL**: `https://your-app-name.streamlit.app`
+
+✨ **No server costs, no configuration needed!**
+
+For detailed deployment guide, see: [DEPLOYMENT.md](DEPLOYMENT.md)
 
 ## 📱 How to Export Your WhatsApp Chat
 

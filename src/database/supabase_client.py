@@ -4,26 +4,64 @@ Handles connection to Supabase database
 """
 
 import os
-from supabase import create_client, Client
 from typing import Optional
+
+try:
+    from supabase import create_client, Client
+except ImportError:
+    Client = None
 
 class SupabaseManager:
     """Manages Supabase connection and operations"""
     
     def __init__(self):
-        self.url = os.getenv("SUPABASE_URL", "https://ojusbxunwfnqisoqmxbf.supabase.co")
-        self.key = os.getenv("SUPABASE_KEY", "")
+        """Initialize Supabase client with environment variables"""
+        self.url = None
+        self.key = None
         self.client: Optional[Client] = None
-        
-        if self.key:
-            try:
-                self.client = create_client(self.url, self.key)
-            except Exception as e:
-                print(f"Failed to initialize Supabase client: {e}")
+        self.connected = False
+        self._initialize_client()
+    
+    def _initialize_client(self):
+        """Safely initialize the Supabase client"""
+        try:
+            # Get credentials from environment
+            self.url = os.getenv("SUPABASE_URL", "").strip()
+            self.key = os.getenv("SUPABASE_KEY", "").strip()
+            
+            # Validate credentials exist
+            if not self.url or not self.key:
+                print("⚠️  Supabase credentials not configured (optional)")
+                return
+            
+            # Validate URL format
+            if not self.url.startswith("https://"):
+                print("❌ Invalid Supabase URL format")
+                return
+            
+            # Try to create client
+            if Client is not None:
+                try:
+                    self.client = create_client(self.url, self.key)
+                    self.connected = True
+                    print("✅ Supabase connected successfully!")
+                except Exception as e:
+                    print(f"⚠️  Supabase connection error: {str(e)[:100]}")
+                    print("   App will work without cloud storage")
+            else:
+                print("⚠️  Supabase library not available (optional)")
+                
+        except Exception as e:
+            print(f"⚠️  Error initializing Supabase: {str(e)}")
+    
+    def reconnect(self) -> bool:
+        """Try to reconnect to Supabase"""
+        self._initialize_client()
+        return self.is_connected()
     
     def is_connected(self) -> bool:
-        """Check if Supabase client is initialized"""
-        return self.client is not None
+        """Check if Supabase client is initialized and connected"""
+        return self.client is not None and self.connected
     
     def save_file(self, filename: str, file_bytes: bytes) -> dict:
         """

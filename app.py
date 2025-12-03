@@ -12,8 +12,11 @@ import re
 import os
 from dotenv import load_dotenv
 
-# Load environment variables first
-load_dotenv()
+# Load environment variables first (works for local development)
+try:
+    load_dotenv()
+except Exception:
+    pass  # Streamlit Cloud doesn't need .env file
 
 # Import local modules
 from src.analyzers.chatline import Chatline
@@ -25,7 +28,12 @@ st.set_page_config(
     page_title="WhatsApp Analyzer",
     page_icon="💬",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer',
+        'Report a bug': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer/issues',
+        'About': 'WhatsApp Chat Analyzer v2.0 - Made with Streamlit'
+    }
 )
 
 # Custom CSS for better styling
@@ -58,6 +66,36 @@ uploaded_file = st.sidebar.file_uploader(
     type=['txt'],
     help="Export your WhatsApp chat without media"
 )
+
+# Theme settings
+st.sidebar.markdown("---")
+st.sidebar.subheader("🎨 Theme Control")
+st.sidebar.markdown("""
+### How to Change Theme
+
+**🌐 Streamlit Cloud:**
+1. Click **⚙️** (Settings icon - top right)
+2. Select **Settings**
+3. Choose **Light/Dark** theme
+
+**💻 Local Machine:**
+The app uses the theme from `.streamlit/config.toml`:
+
+```toml
+[theme]
+base = "light"  # Change to "dark"
+```
+
+Then restart the app:
+```bash
+streamlit run app.py
+```
+
+**⌨️ Command Line:**
+```bash
+streamlit run app.py --theme dark
+```
+""")
 
 # Initialize date filter in session state
 if 'date_filter_enabled' not in st.session_state:
