@@ -4,22 +4,29 @@ Handles connection to Supabase database
 """
 
 import os
-from supabase import create_client, Client
 from typing import Optional
+
+try:
+    from supabase import create_client, Client
+except ImportError:
+    Client = None
 
 class SupabaseManager:
     """Manages Supabase connection and operations"""
     
     def __init__(self):
-        self.url = os.getenv("SUPABASE_URL", "https://ojusbxunwfnqisoqmxbf.supabase.co")
-        self.key = os.getenv("SUPABASE_KEY", "")
+        self.url = os.getenv("SUPABASE_URL", "").strip() or None
+        self.key = os.getenv("SUPABASE_KEY", "").strip() or None
         self.client: Optional[Client] = None
         
-        if self.key:
+        if self.url and self.key:
             try:
                 self.client = create_client(self.url, self.key)
             except Exception as e:
-                print(f"Failed to initialize Supabase client: {e}")
+                print(f"Supabase initialization note: {e}")
+        else:
+            # Silently fail - app works without Supabase
+            pass
     
     def is_connected(self) -> bool:
         """Check if Supabase client is initialized"""

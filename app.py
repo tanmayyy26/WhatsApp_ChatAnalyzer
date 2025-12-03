@@ -12,8 +12,11 @@ import re
 import os
 from dotenv import load_dotenv
 
-# Load environment variables first
-load_dotenv()
+# Load environment variables first (works for local development)
+try:
+    load_dotenv()
+except Exception:
+    pass  # Streamlit Cloud doesn't need .env file
 
 # Import local modules
 from src.analyzers.chatline import Chatline
