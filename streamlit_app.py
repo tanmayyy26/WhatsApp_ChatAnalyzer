@@ -1,7 +1,8 @@
 import streamlit as st
 
-st.title("WhatsApp Chat Analyzer")
-st.write("App is running!")
+st.title("🔍 WhatsApp Chat Analyzer - Diagnostic Mode")
+st.write("Testing imports... Please wait...")
+st.write("---")
 
 # Test imports
 try:
