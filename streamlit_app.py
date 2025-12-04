@@ -1,31 +1,24 @@
-import sys
-import streamlit as st
+#!/usr/bin/env python3
+"""
+WhatsApp Chat Analyzer - Streamlit App
+Minimal version for Streamlit Cloud deployment
+"""
 
-# ABSOLUTELY FIRST - No other imports before this!
-st.set_page_config(page_title="WhatsApp Analyzer", page_icon="💬", layout="wide")
-
-st.title("💬 WhatsApp Chat Analyzer - SUPER MINIMAL DIAGNOSTIC")
-st.write("If you see this, Streamlit IS working!")
-st.success("✅ Streamlit initialization successful!")
-
-# Now test pandas AFTER page config
-st.subheader("Testing libraries...")
 try:
-    import pandas
-    st.success("✅ Pandas OK")
+    import streamlit as st
+    
+    # ABSOLUTELY FIRST STREAMLIT COMMAND
+    st.set_page_config(
+        page_title="WhatsApp Analyzer",
+        page_icon="💬",
+        layout="wide"
+    )
+    
+    st.title("💬 WhatsApp Chat Analyzer")
+    st.write("App loaded successfully!")
+    
 except Exception as e:
-    st.error(f"❌ Pandas: {e}")
-
-# Test plotly
-try:
-    import plotly
-    st.success("✅ Plotly OK")
-except Exception as e:
-    st.error(f"❌ Plotly: {e}")
-
-# Test our modules
-try:
-    import src
-    st.success("✅ src package OK")
-except Exception as e:
-    st.error(f"❌ src package: {e}")
+    print(f"CRITICAL ERROR: {e}")
+    import traceback
+    traceback.print_exc()
+    exit(1)
