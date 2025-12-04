@@ -15,7 +15,7 @@ level = "warning"
 
 [server]
 headless = true
-port = 8504
+port = 8501
 maxUploadSize = 200
 enableCORS = true
 enableXsrfProtection = true
