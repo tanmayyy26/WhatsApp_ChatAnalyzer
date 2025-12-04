@@ -27,11 +27,8 @@ try:
     from src.database.supabase_client import supabase_manager
     FULL_APP = True
 except ImportError as e:
-    st.error(f"Import error: {str(e)}")
-    st.error("The app cannot load all features. Please check the configuration.")
-    FULL_APP = False
-    import sys
-    sys.exit(1)
+    st.error(f"⚠️ Import Error: {str(e)}")
+    st.stop()  # Stop execution instead of sys.exit
 
 # Rest of the app
 from datetime import datetime
