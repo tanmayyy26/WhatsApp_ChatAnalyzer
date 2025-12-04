@@ -14,7 +14,9 @@ from dotenv import load_dotenv
 
 # Load environment variables first (works for local development)
 try:
-    load_dotenv()
+    # Try loading from current directory and parent directory
+    env_path = os.path.join(os.path.dirname(__file__), ".env")
+    load_dotenv(dotenv_path=env_path, override=True)
 except Exception:
     pass  # Streamlit Cloud doesn't need .env file
 
