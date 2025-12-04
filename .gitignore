@@ -3,6 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Environment variables and secrets
+.env
+.env.local
+.streamlit/secrets.toml
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -12,3 +22,12 @@ ipython_config.py
 
 # VSCODE
 .vscode
+
+# Data files
+data/
+exports/
+reports/
+
+# OS files
+.DS_Store
+Thumbs.db

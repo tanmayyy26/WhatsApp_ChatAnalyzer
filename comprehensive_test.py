@@ -102,8 +102,9 @@ print("\n7️⃣  Testing Love Score Analysis...")
 try:
     participants = list(set(c.sender for c in msgs if c.sender))
     if len(participants) >= 2:
-        analyzer = ReplyAnalyzer(chats, participants[0], participants[1])
-        love_score = analyzer.love_score()
+        analyzer = ReplyAnalyzer(chats)
+        analysis = analyzer.analyze_pair(participants[0], participants[1])
+        love_score = analysis['comparison']['combined_love_score']
         print(f"   ✅ Love Score: {love_score:.1f}/100")
         print(f"   💑 Between: {participants[0][:20]}... & {participants[1][:20]}...")
     else:

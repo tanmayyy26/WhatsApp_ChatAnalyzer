@@ -219,6 +219,8 @@ class ReplyAnalyzer:
             counterpart_series, counterpart_regression, counterpart_stats
         )
         
+        combined_love_score = (love_score.score + counterpart_love_score.score) / 2
+
         return {
             'target': {
                 'name': target,
@@ -250,7 +252,8 @@ class ReplyAnalyzer:
                 'faster_replier': target if target_stats.median < counterpart_stats.median else counterpart,
                 'more_consistent': target if target_stats.std < counterpart_stats.std else counterpart,
                 'improving_faster': target if target_regression.slope < counterpart_regression.slope else counterpart,
-                'median_diff': abs(round(target_stats.median - counterpart_stats.median, 2))
+                'median_diff': abs(round(target_stats.median - counterpart_stats.median, 2)),
+                'combined_love_score': combined_love_score
             }
         }
     

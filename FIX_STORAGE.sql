@@ -21,9 +21,10 @@ WHERE name = 'char files';
 -- This allows anyone to upload and read files
 
 -- Delete existing policies first
-DROP POLICY IF EXISTS "Public Access" ON storage.objects;
-DROP POLICY IF EXISTS "Anyone can upload files" ON storage.objects;
-DROP POLICY IF EXISTS "Anyone can read files" ON storage.objects;
+DROP POLICY IF EXISTS "Anyone can upload to char files" ON storage.objects;
+DROP POLICY IF EXISTS "Anyone can read from char files" ON storage.objects;
+DROP POLICY IF EXISTS "Anyone can update in char files" ON storage.objects;
+DROP POLICY IF EXISTS "Anyone can delete from char files" ON storage.objects;
 
 -- Allow anyone to upload files to 'char files' bucket
 CREATE POLICY "Anyone can upload to char files"
