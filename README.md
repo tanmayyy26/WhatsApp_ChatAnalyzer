@@ -1,3 +1,5 @@
+Link to run 👉 https://whatsappchatanalyzer-hk2dyxiakebassysywfyxu.streamlit.app/ 👈
+
 # 💬 WhatsApp Chat Analyzer
 
 A powerful web application to analyze your WhatsApp chat exports with beautiful visualizations and insights.
