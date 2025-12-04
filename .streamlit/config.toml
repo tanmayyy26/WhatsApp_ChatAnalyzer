@@ -11,7 +11,7 @@ showErrorDetails = false
 toolbarMode = "viewer"
 
 [logger]
-level = "warning"
+level = "info"
 
 [server]
 headless = true
