@@ -1,41 +1,37 @@
 import streamlit as st
 
-# ⚠️ CRITICAL: set_page_config MUST be first Streamlit command - BEFORE all imports
-st.set_page_config(
-    page_title="WhatsApp Analyzer",
-    page_icon="💬",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+# CRITICAL: Must be first
+st.set_page_config(page_title="WhatsApp Analyzer", page_icon="💬", layout="wide")
 
-# Now safe to import other libraries
-import os
-from dotenv import load_dotenv
+st.title("💬 WhatsApp Chat Analyzer")
+st.write("App is loading...")
 
-# Load environment variables
-try:
-    load_dotenv()
-except:
-    pass
+# Test basic functionality
+st.success("✅ Streamlit is working!")
 
-# Try to import our modules, but fail gracefully
+# Try to import pandas
 try:
     import pandas as pd
-    import plotly.express as px
-    from src.analyzers.chatline import Chatline
-    from src.analyzers.reply_analyzer import ReplyAnalyzer
-    from src.database.supabase_client import supabase_manager
-    FULL_APP = True
-except ImportError as e:
-    st.error(f"⚠️ Import Error: {str(e)}")
-    st.stop()  # Stop execution instead of sys.exit
+    st.success("✅ Pandas loaded")
+except Exception as e:
+    st.error(f"Pandas error: {e}")
 
-# Rest of the app
-from datetime import datetime
-from collections import Counter
-import re
-import pandas as pd
-import plotly.express as px
+# Try to import plotly
+try:
+    import plotly.express as px
+    st.success("✅ Plotly loaded")
+except Exception as e:
+    st.error(f"Plotly error: {e}")
+
+# Try to import our modules
+try:
+    from src.analyzers.chatline import Chatline
+    st.success("✅ Chatline loaded")
+except Exception as e:
+    st.error(f"Chatline error: {e}")
+
+st.info("If all checks above are green, the app is working!")
+
 
 # Custom CSS for better styling
 st.markdown("""
