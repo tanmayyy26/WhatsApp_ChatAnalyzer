@@ -1,42 +1,44 @@
-"""
-WhatsApp Analyzer - Main Application
-A modern Streamlit application for analyzing WhatsApp chat exports
-"""
-
 import streamlit as st
 
-# ⚠️ CRITICAL: set_page_config MUST be first Streamlit command
+# ⚠️ CRITICAL: set_page_config MUST be first Streamlit command - BEFORE all imports
 st.set_page_config(
     page_title="WhatsApp Analyzer",
     page_icon="💬",
     layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'Get Help': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer',
-        'Report a bug': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer/issues',
-        'About': 'WhatsApp Chat Analyzer v2.0 - Made with Streamlit'
-    }
+    initial_sidebar_state="expanded"
 )
 
-# Now import everything else
-import pandas as pd
-import plotly.express as px
-from datetime import datetime
-from collections import Counter
-import re
+# Now safe to import other libraries
 import os
 from dotenv import load_dotenv
 
-# Load environment variables first (works for local development)
+# Load environment variables
 try:
     load_dotenv()
-except Exception:
-    pass  # Streamlit Cloud doesn't need .env file
+except:
+    pass
 
-# Import local modules
-from src.analyzers.chatline import Chatline
-from src.analyzers.reply_analyzer import ReplyAnalyzer
-from src.database.supabase_client import supabase_manager
+# Try to import our modules, but fail gracefully
+try:
+    import pandas as pd
+    import plotly.express as px
+    from src.analyzers.chatline import Chatline
+    from src.analyzers.reply_analyzer import ReplyAnalyzer
+    from src.database.supabase_client import supabase_manager
+    FULL_APP = True
+except ImportError as e:
+    st.error(f"Import error: {str(e)}")
+    st.error("The app cannot load all features. Please check the configuration.")
+    FULL_APP = False
+    import sys
+    sys.exit(1)
+
+# Rest of the app
+from datetime import datetime
+from collections import Counter
+import re
+import pandas as pd
+import plotly.express as px
 
 # Custom CSS for better styling
 st.markdown("""
