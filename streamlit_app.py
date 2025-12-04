@@ -4,6 +4,21 @@ A modern Streamlit application for analyzing WhatsApp chat exports
 """
 
 import streamlit as st
+
+# ⚠️ CRITICAL: set_page_config MUST be first Streamlit command
+st.set_page_config(
+    page_title="WhatsApp Analyzer",
+    page_icon="💬",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer',
+        'Report a bug': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer/issues',
+        'About': 'WhatsApp Chat Analyzer v2.0 - Made with Streamlit'
+    }
+)
+
+# Now import everything else
 import pandas as pd
 import plotly.express as px
 from datetime import datetime
@@ -22,19 +37,6 @@ except Exception:
 from src.analyzers.chatline import Chatline
 from src.analyzers.reply_analyzer import ReplyAnalyzer
 from src.database.supabase_client import supabase_manager
-
-# Page configuration
-st.set_page_config(
-    page_title="WhatsApp Analyzer",
-    page_icon="💬",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'Get Help': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer',
-        'Report a bug': 'https://github.com/tanmayyy26/WhatsApp_ChatAnalyzer/issues',
-        'About': 'WhatsApp Chat Analyzer v2.0 - Made with Streamlit'
-    }
-)
 
 # Custom CSS for better styling
 st.markdown("""
