@@ -2,26 +2,59 @@
 Flask API for WhatsApp Chat Analyzer - Vercel deployment
 """
 
-from flask import Flask, render_template, request, jsonify, send_file
-from werkzeug.utils import secure_filename
+from flask import Flask, request, jsonify
 import pandas as pd
 from datetime import datetime
 from collections import Counter
 import re
-import os
 from io import BytesIO
 import json
+from dateutil import parser as date_parser
 
-# Import local modules
-import sys
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from src.analyzers.chatline import Chatline
-from src.analyzers.reply_analyzer import ReplyAnalyzer
-
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-ALLOWED_EXTENSIONS = {'txt'}
+
+# Simple WhatsApp chat parser for Vercel
+class SimpleChatParser:
+    def __init__(self, line):
+        self.line = line
+        self.timestamp = None
+        self.sender = None
+        self.body = ""
+        self.line_type = None
+        self.parse()
+    
+    def parse(self):
+        # Pattern: [DD/MM/YYYY, HH:MM:SS] Sender: Message or DD/MM/YYYY, HH:MM - Sender: Message
+        pattern = r'\[?(\d{1,2}[/-]\d{1,2}[/-]\d{2,4},?\s+\d{1,2}:\d{2}(?::\d{2})?(?:\s?[ap]\.?m\.?)?)\]?\s*-?\s*([^:]+):\s*(.+)'
+        match = re.match(pattern, self.line, re.IGNORECASE)
+        
+        if match:
+            try:
+                self.timestamp = date_parser.parse(match.group(1), fuzzy=True)
+                self.sender = match.group(2).strip()
+                self.body = match.group(3).strip()
+                self.line_type = "Chat"
+            except:
+                self.line_type = "Event"
+        else:
+            self.line_type = "Event"
+
+def parse_chat_file(content):
+    """Parse WhatsApp chat file content"""
+    lines = content.split('\n')
+    messages = []
+    
+    for line in lines:
+        if line.strip():
+            try:
+                msg = SimpleChatParser(line)
+                if msg.line_type == "Chat" and msg.sender and msg.body:
+                    messages.append(msg)
+            except:
+                pass
+    
+    return messages
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -238,35 +271,20 @@ def analyze():
         if file.filename == '':
             return jsonify({'error': 'No file selected'}), 400
         
-        if not allowed_file(file.filename):
+        if not file.filename.endswith('.txt'):
             return jsonify({'error': 'Only .txt files are allowed'}), 400
         
-        # Read file content
+        # Read and parse file content
         content = file.read().decode('utf-8', errors='ignore')
-        lines = content.split('\n')
-        
-        # Parse chat
-        chats = []
-        previous_chat = None
-        for line in lines:
-            if line.strip():
-                try:
-                    chat = Chatline(line, previous_line=previous_chat)
-                    chats.append(chat)
-                    previous_chat = chat
-                except:
-                    pass
-        
-        # Filter chat messages
-        msgs = [c for c in chats if c.line_type == "Chat"]
+        msgs = parse_chat_file(content)
         
         if len(msgs) == 0:
             return jsonify({'error': 'No messages found in file'}), 400
         
         # Extract basic information
-        senders = [c.sender for c in msgs if c.sender]
+        senders = [m.sender for m in msgs if m.sender]
         sender_counts = Counter(senders)
-        dates = [c.timestamp for c in msgs if hasattr(c, 'timestamp') and c.timestamp]
+        dates = [m.timestamp for m in msgs if m.timestamp]
         
         # === BASIC STATISTICS ===
         basic_stats = {
@@ -290,6 +308,14 @@ def analyze():
         words = []
         for msg in msgs:
             if hasattr(msg, 'body') and msg.body:
+                text = str(msg.body).lower()
+                text = re.sub(r'[^\w\s]', '', text)
+                words.extend(text.split())
+        
+        # === WORD CLOUD DATA ===
+        words = []
+        for msg in msgs:
+            if msg.body:
                 text = str(msg.body).lower()
                 text = re.sub(r'[^\w\s]', '', text)
                 words.extend(text.split())
@@ -336,22 +362,6 @@ def analyze():
             for i in range(7)
         ]
         
-        # === LOVE SCORE ANALYSIS ===
-        love_score_data = []
-        try:
-            analyzer = ReplyAnalyzer(msgs)
-            scores = analyzer.get_love_scores()
-            if scores and len(scores) >= 2:
-                love_score_data = [
-                    {
-                        'sender': s['sender'],
-                        'love_score': round(s['love_score'], 1),
-                        'message_count': s['message_count']
-                    }
-                    for s in scores
-                ]
-        except:
-            pass
         
         # Prepare response
         analysis_data = {
@@ -362,7 +372,7 @@ def analyze():
             'daily_activity': daily_activity,
             'hourly_activity': hourly_data,
             'daily_breakdown': daily_breakdown,
-            'love_scores': love_score_data,
+            'love_scores': [],
             'timestamp': datetime.now().isoformat()
         }
         
