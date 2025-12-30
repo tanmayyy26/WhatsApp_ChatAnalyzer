@@ -3,15 +3,14 @@ Flask API for WhatsApp Chat Analyzer - Vercel deployment
 """
 
 from flask import Flask, request, jsonify
-import pandas as pd
+import re
+import json
 from datetime import datetime
 from collections import Counter
-import re
-from io import BytesIO
-import json
-from dateutil import parser as date_parser
 
+# Initialize Flask app
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 # Simple WhatsApp chat parser for Vercel
@@ -24,6 +23,27 @@ class SimpleChatParser:
         self.line_type = None
         self.parse()
     
+    def parse_date(self, date_str):
+        """Parse various WhatsApp date formats"""
+        try:
+            # Try different date formats
+            formats = [
+                '%d/%m/%Y, %H:%M:%S',
+                '%d/%m/%Y, %H:%M',
+                '%m/%d/%y, %I:%M %p',
+                '%d/%m/%y, %H:%M',
+                '%d-%m-%Y, %H:%M:%S',
+                '%d-%m-%Y, %H:%M',
+            ]
+            for fmt in formats:
+                try:
+                    return datetime.strptime(date_str.strip(), fmt)
+                except:
+                    continue
+            return None
+        except:
+            return None
+    
     def parse(self):
         # Pattern: [DD/MM/YYYY, HH:MM:SS] Sender: Message or DD/MM/YYYY, HH:MM - Sender: Message
         pattern = r'\[?(\d{1,2}[/-]\d{1,2}[/-]\d{2,4},?\s+\d{1,2}:\d{2}(?::\d{2})?(?:\s?[ap]\.?m\.?)?)\]?\s*-?\s*([^:]+):\s*(.+)'
@@ -31,7 +51,7 @@ class SimpleChatParser:
         
         if match:
             try:
-                self.timestamp = date_parser.parse(match.group(1), fuzzy=True)
+                self.timestamp = self.parse_date(match.group(1))
                 self.sender = match.group(2).strip()
                 self.body = match.group(3).strip()
                 self.line_type = "Chat"
