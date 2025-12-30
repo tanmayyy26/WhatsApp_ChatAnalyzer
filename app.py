@@ -23,7 +23,6 @@ except Exception:
 # Import local modules
 from src.analyzers.chatline import Chatline
 from src.analyzers.reply_analyzer import ReplyAnalyzer
-from src.database.supabase_client import supabase_manager
 
 # Page configuration
 st.set_page_config(
@@ -90,11 +89,6 @@ st.sidebar.markdown("""
 
 # Main application logic
 if uploaded_file:
-    # Auto-save to Supabase (silently)
-    if supabase_manager.is_connected():
-        file_bytes = uploaded_file.getvalue()
-        supabase_manager.save_file(uploaded_file.name, file_bytes)
-    
     # Parse chat file
     content = uploaded_file.getvalue().decode('utf-8')
     lines = content.split('\n')
