@@ -319,6 +319,5 @@ def analyze():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Vercel handler
-def handler(event, context):
-    return app(event, context)
+# Export app for Vercel WSGI
+__all__ = ['app']
