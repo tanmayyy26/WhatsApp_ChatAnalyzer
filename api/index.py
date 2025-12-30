@@ -319,5 +319,11 @@ def analyze():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Export app for Vercel WSGI
-__all__ = ['app']
+# Vercel serverless handler
+from werkzeug.wrappers import Request, Response
+
+def handler(request: Request):
+    """Vercel serverless function handler"""
+    return app(request.environ, request.start_response)
+
+__all__ = ['app', 'handler']
