@@ -1,5 +1,5 @@
 """
-Flask API for WhatsApp Chat Analyzer - Vercel deployment
+Flask API for WhatsApp Chat Analyzer - Vercel deployment (Minimal Version)
 """
 
 from flask import Flask, request, jsonify
@@ -11,9 +11,8 @@ from collections import Counter
 # Initialize Flask app
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
-# Simple WhatsApp chat parser for Vercel
+# Simple WhatsApp chat parser
 class SimpleChatParser:
     def __init__(self, line):
         self.line = line
@@ -26,7 +25,6 @@ class SimpleChatParser:
     def parse_date(self, date_str):
         """Parse various WhatsApp date formats"""
         try:
-            # Try different date formats
             formats = [
                 '%d/%m/%Y, %H:%M:%S',
                 '%d/%m/%Y, %H:%M',
@@ -45,7 +43,6 @@ class SimpleChatParser:
             return None
     
     def parse(self):
-        # Pattern: [DD/MM/YYYY, HH:MM:SS] Sender: Message or DD/MM/YYYY, HH:MM - Sender: Message
         pattern = r'\[?(\d{1,2}[/-]\d{1,2}[/-]\d{2,4},?\s+\d{1,2}:\d{2}(?::\d{2})?(?:\s?[ap]\.?m\.?)?)\]?\s*-?\s*([^:]+):\s*(.+)'
         match = re.match(pattern, self.line, re.IGNORECASE)
         
@@ -75,9 +72,6 @@ def parse_chat_file(content):
                 pass
     
     return messages
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def home():
@@ -119,139 +113,93 @@ def home():
             cursor: pointer;
             transition: transform 0.3s;
         }
-        .file-input-label:hover { transform: translateY(-2px); }
+        .file-input-label:hover { transform: scale(1.05); }
         input[type="file"] { display: none; }
-        .analyze-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 50px;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .loading { display: none; text-align: center; padding: 20px; }
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .results-section { display: none; }
-        .results-section.show { display: block; }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .stat-card .value { font-size: 2em; font-weight: bold; color: #667eea; }
-        .section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        .section h2 { color: #333; margin-bottom: 20px; border-bottom: 3px solid #667eea; padding-bottom: 15px; }
-        .chart-container { height: 400px; margin: 20px 0; }
-        .message { padding: 15px; border-radius: 10px; margin: 20px 0; display: none; }
-        .error { background: #fff3cd; border: 1px solid #ffc107; color: #856404; }
-        .success { background: #d4edda; border: 1px solid #28a745; color: #155724; }
-        .message.show { display: block; }
+        .results { background: white; border-radius: 15px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: none; }
+        .results.show { display: block; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 10px; text-align: center; }
+        .stat-card .value { font-size: 2.5em; font-weight: bold; margin-top: 10px; }
+        .chart { margin-bottom: 40px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .loading { display: none; text-align: center; margin-top: 20px; color: #667eea; font-size: 1.2em; }
+        .loading.show { display: block; }
+        .error { color: #e74c3c; text-align: center; margin-top: 20px; font-size: 1.1em; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>💬 WhatsApp Chat Analyzer</h1>
-            <p>Upload your WhatsApp chat export to discover insights! ✨</p>
+            <p>Upload your WhatsApp chat export to analyze conversations</p>
         </header>
         
         <div class="upload-section">
-            <h2 style="margin-bottom: 20px; color: #333;">📤 Upload Your Chat File</h2>
-            <div>
-                <input type="file" id="fileInput" accept=".txt" />
-                <label for="fileInput" class="file-input-label">📁 Choose File</label>
-                <p id="fileName" style="margin: 15px 0; color: #666;">No file selected</p>
-            </div>
-            <button class="analyze-btn" id="analyzeBtn" onclick="analyzeChat()" disabled>🚀 Analyze Chat</button>
-            <div class="loading" id="loading"><div class="spinner"></div><p>Analyzing your chat...</p></div>
-            <div class="message error" id="errorMessage"></div>
-            <div class="message success" id="successMessage"></div>
+            <h2 style="margin-bottom: 20px;">Upload Chat File</h2>
+            <p style="margin-bottom: 30px; color: #666;">Export your chat from WhatsApp (without media) and upload the .txt file</p>
+            <form id="uploadForm">
+                <label for="fileInput" class="file-input-label">Choose File</label>
+                <input type="file" id="fileInput" name="file" accept=".txt" required>
+                <div id="fileName" style="margin-top: 15px; color: #666;"></div>
+            </form>
+            <div class="loading" id="loading">Analyzing your chat... ⏳</div>
+            <div class="error" id="error"></div>
         </div>
         
-        <div class="results-section" id="resultsSection">
+        <div class="results" id="resultsSection">
+            <h2 style="margin-bottom: 30px; color: #333;">Analysis Results</h2>
             <div class="stats-grid" id="statsGrid"></div>
-            <div class="section"><h2>👥 Top Contributors</h2><div id="topSendersChart" class="chart-container"></div></div>
-            <div class="section"><h2>🔤 Top Words</h2><div id="wordsChart" class="chart-container"></div></div>
-            <div class="section"><h2>📅 Activity Patterns</h2><div id="dailyActivityChart" class="chart-container"></div></div>
+            <div class="chart" id="topSendersChart"></div>
+            <div class="chart" id="wordsChart"></div>
+            <div class="chart" id="dailyActivityChart"></div>
         </div>
-        
-        <footer style="text-align: center; color: white; margin-top: 40px;">
-            <p>Made with ❤️ | WhatsApp Analyzer v2.0</p>
-        </footer>
     </div>
     
     <script>
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const fileName = e.target.files[0]?.name || 'No file selected';
-            document.getElementById('fileName').textContent = fileName;
-            document.getElementById('analyzeBtn').disabled = !e.target.files[0];
-        });
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const loading = document.getElementById('loading');
+        const errorDiv = document.getElementById('error');
         
-        async function analyzeChat() {
-            const file = document.getElementById('fileInput').files[0];
-            if (!file) { showError('Please select a file first'); return; }
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            fileName.textContent = `Selected: ${file.name}`;
+            loading.classList.add('show');
+            errorDiv.textContent = '';
+            document.getElementById('resultsSection').classList.remove('show');
             
             const formData = new FormData();
             formData.append('file', file);
             
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('errorMessage').classList.remove('show');
-            document.getElementById('successMessage').classList.remove('show');
-            
             try {
-                const response = await fetch('/api/analyze', { method: 'POST', body: formData });
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
                 const data = await response.json();
-                if (!response.ok) throw new Error(data.error || 'Analysis failed');
+                loading.classList.remove('show');
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Analysis failed');
+                }
                 
                 displayResults(data);
-                document.getElementById('successMessage').textContent = '✅ Analysis complete!';
-                document.getElementById('successMessage').classList.add('show');
             } catch (error) {
-                showError(error.message);
-            } finally {
-                document.getElementById('loading').style.display = 'none';
+                loading.classList.remove('show');
+                errorDiv.textContent = `Error: ${error.message}`;
             }
-        }
-        
-        function showError(message) {
-            document.getElementById('errorMessage').textContent = '❌ ' + message;
-            document.getElementById('errorMessage').classList.add('show');
-        }
+        });
         
         function displayResults(data) {
             const stats = data.basic_stats;
+            
             document.getElementById('statsGrid').innerHTML = `
-                <div class="stat-card"><div style="color: #999; margin-bottom: 10px;">💬 Total Messages</div><div class="value">${stats.total_messages.toLocaleString()}</div></div>
-                <div class="stat-card"><div style="color: #999; margin-bottom: 10px;">👥 Participants</div><div class="value">${stats.participants}</div></div>
-                <div class="stat-card"><div style="color: #999; margin-bottom: 10px;">📅 Duration (Days)</div><div class="value">${stats.duration_days}</div></div>
-                <div class="stat-card"><div style="color: #999; margin-bottom: 10px;">📈 Avg Messages/Day</div><div class="value">${stats.avg_messages_per_day.toFixed(1)}</div></div>
+                <div class="stat-card"><div style="color: #fff; margin-bottom: 10px;">💬 Total Messages</div><div class="value">${stats.total_messages.toLocaleString()}</div></div>
+                <div class="stat-card"><div style="color: #fff; margin-bottom: 10px;">👥 Participants</div><div class="value">${stats.participants}</div></div>
+                <div class="stat-card"><div style="color: #fff; margin-bottom: 10px;">📅 Duration (Days)</div><div class="value">${stats.duration_days}</div></div>
+                <div class="stat-card"><div style="color: #fff; margin-bottom: 10px;">📈 Avg Messages/Day</div><div class="value">${stats.avg_messages_per_day.toFixed(1)}</div></div>
             `;
             
             Plotly.newPlot('topSendersChart', [{
@@ -306,7 +254,7 @@ def analyze():
         sender_counts = Counter(senders)
         dates = [m.timestamp for m in msgs if m.timestamp]
         
-        # === BASIC STATISTICS ===
+        # Basic statistics
         basic_stats = {
             'total_messages': len(msgs),
             'participants': len(sender_counts),
@@ -314,7 +262,7 @@ def analyze():
             'avg_messages_per_day': len(msgs) / ((max(dates) - min(dates)).days + 1) if dates else 0
         }
         
-        # === TOP SENDERS ===
+        # Top senders
         top_senders = [
             {
                 'sender': sender,
@@ -324,15 +272,7 @@ def analyze():
             for sender, count in sender_counts.most_common(10)
         ]
         
-        # === WORD CLOUD DATA ===
-        words = []
-        for msg in msgs:
-            if hasattr(msg, 'body') and msg.body:
-                text = str(msg.body).lower()
-                text = re.sub(r'[^\w\s]', '', text)
-                words.extend(text.split())
-        
-        # === WORD CLOUD DATA ===
+        # Word analysis
         words = []
         for msg in msgs:
             if msg.body:
@@ -355,33 +295,14 @@ def analyze():
             for word, count in word_counts.most_common(20)
         ]
         
-        # === TIME SERIES ANALYSIS ===
+        # Time series analysis
         daily_activity = []
-        hourly_activity = [0] * 24
-        day_activity = [0] * 7
-        
         if dates:
             date_counts = Counter([d.date() for d in dates])
             daily_activity = [
                 {'date': str(date), 'messages': count}
                 for date, count in sorted(date_counts.items())
             ]
-            
-            for d in dates:
-                hourly_activity[d.hour] += 1
-                day_activity[d.weekday()] += 1
-        
-        hourly_data = [
-            {'hour': h, 'messages': hourly_activity[h]}
-            for h in range(24)
-        ]
-        
-        day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        daily_breakdown = [
-            {'day': day_names[i], 'messages': day_activity[i]}
-            for i in range(7)
-        ]
-        
         
         # Prepare response
         analysis_data = {
@@ -390,9 +311,6 @@ def analyze():
             'top_senders': top_senders,
             'top_words': top_words,
             'daily_activity': daily_activity,
-            'hourly_activity': hourly_data,
-            'daily_breakdown': daily_breakdown,
-            'love_scores': [],
             'timestamp': datetime.now().isoformat()
         }
         
@@ -401,49 +319,6 @@ def analyze():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/export/<format_type>', methods=['POST'])
-def export_data(format_type):
-    """Export analysis results"""
-    try:
-        data = request.get_json()
-        
-        if format_type == 'json':
-            output = BytesIO()
-            output.write(json.dumps(data, indent=2).encode())
-            output.seek(0)
-            
-            return send_file(
-                output,
-                mimetype='application/json',
-                as_attachment=True,
-                download_name=f'analysis_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
-            )
-        
-        elif format_type == 'csv':
-            # Convert to CSV format
-            df = pd.DataFrame(data.get('top_senders', []))
-            output = BytesIO()
-            df.to_csv(output, index=False)
-            output.seek(0)
-            
-            return send_file(
-                output,
-                mimetype='text/csv',
-                as_attachment=True,
-                download_name=f'analysis_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
-            )
-        
-        else:
-            return jsonify({'error': 'Unsupported format'}), 400
-    
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-# Vercel serverless function handler
-def handler(request):
-    with app.request_context(request.environ):
-        return app.full_dispatch_request()
-
-# For local development
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+# Vercel handler
+def handler(event, context):
+    return app(event, context)
