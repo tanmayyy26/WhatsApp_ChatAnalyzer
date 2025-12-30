@@ -166,6 +166,5 @@ def analyze():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Vercel serverless handler
-def handler(request):
-    return app(request.environ, request.start_response)
+# Vercel uses the Flask app directly
+# Export as WSGI application
