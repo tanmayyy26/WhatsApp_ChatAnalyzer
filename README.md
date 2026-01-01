@@ -2,7 +2,7 @@
 
 A powerful web application to analyze WhatsApp chat exports with beautiful visualizations and insights.
 
-**Deployed at:** https://whatsapp-analyzer-flame.vercel.app
+
 
 ---
 
